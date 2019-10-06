@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2019-10-06T16:21:09+02:00",
+  "updated": "2019-10-06T21:48:17+02:00",
   "id": "programmation-fonctionnelle-avec-arrow-kt",
   "duration": 0,
   "title": "Programmation fonctionnelle avec Arrow KT",
@@ -18,6 +18,8 @@
     "codelab"
   ],
   "tags": [
+    "arrow-kt",
+    "functional programming",
     "kotlin"
   ],
   "url": "programmation-fonctionnelle-avec-arrow-kt"
