@@ -28,9 +28,7 @@
                   feedback-link="">
     
       <google-codelab-step label="Aperçu" duration="0">
-        <p>Durée du code lab: 50 min<br>Préparé par: Riadh MNASRI</p>
-<h2 is-upgraded>Ce que vous allez apprendre</h2>
-<ul>
+        <ul>
 <li>Pourquoi Arrow KT ?</li>
 <li>Les concepts Kotlin exploités par Arrow KT (Extension functions, sealed class)</li>
 <li>Quelques concepts de la programmation fonctionnelle (Functor, Applicative, Monad)</li>
@@ -42,6 +40,18 @@
 <li>Option</li>
 <li>Either</li>
 <li>Try</li>
+<li>Conclusion</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prérequis" duration="0">
+        <ul>
+<li>Connaissances de base sur Kotlin</li>
+<li>Connaissances de base sur la programmation fonctionnelle</li>
+<li>IntelliJ</li>
+<li>JDK8+</li>
 </ul>
 
 
@@ -119,7 +129,7 @@ data class Author(val name : String)
       <google-codelab-step label="Applicative" duration="0">
         <p>c&#39;est un type qui définit 2 fonctions, une fonction pure(t : T) qui retourne t encapsulé dans un conteneur (un type) et une 2ème fonction qui permet de transférer un type encapsulé dans un conteneur en un autre type encapsulé dans le même conteneur.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonctione qui permet d&#39;appliquer à une liste de livres d&#39;appliquer des fonctions qui permet de noter le livre et une fonction qui permet de vérifier la disponibilité.</p>
+<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres d&#39;appliquer des fonctions qui permet de noter le livre et une fonction qui permet de vérifier la disponibilité.</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;, val numberOfReaders: Long, val editionDate: LocalDateTime)
 
 </code></pre>
@@ -196,6 +206,16 @@ data class Author(val name : String)
     
       <google-codelab-step label="Try" duration="0">
         <p>Encapsuler la fonction précédente dans un Try, tester l&#39;appel à une BookRepository findBookByTitle() avec un bouquin introuvable</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion" duration="0">
+        <p>Grâce à ce codelab, vous avez pu acquérir les bases qui vous permettent de commencer à utiliser Arrow-kt dans vos projets.<br>Pour approfondir le sujet, je vous recommand de:</p>
+<ul>
+<li>lire la documentation sur le site https://arrow-kt.io</li>
+<li>Lire l&#39;excellent livre &#34;Functional Kotlin&#34; de Mario Arias et Rivu Chakraborty</li>
+</ul>
 
 
       </google-codelab-step>
