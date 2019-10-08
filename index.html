@@ -73,10 +73,10 @@
       </google-codelab-step>
     
       <google-codelab-step label="Fonction d&#39;extension" duration="0">
-        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur un classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous appartient pas et ou qu&#39;on n&#39;a pas le droit de modifier</p>
+        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur une classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous appartient pas et ou qu&#39;on n&#39;a pas le droit de modifier.</p>
 <p>Kotlin offre la possibilité d&#39;étendre une classe avec de nouvelles fonctionnalités, sans avoir à hériter de la classe ni à utiliser des design pattern tels que Decorator. Cela se fait en passant par des déclarations spéciales appelées extensions. Par exemple, vous pouvez écrire de nouvelles fonctions pour une classe à partir d&#39;une bibliothèque tierce que vous ne pouvez pas modifier. De telles fonctions sont disponibles pour appeler de la manière habituelle, comme s&#39;il s&#39;agissait de méthodes de la classe d&#39;origine. Ce mécanisme s&#39;appelle des fonctions d&#39;extension. Il existe également des propriétés d&#39;extension qui vous permettent de définir de nouvelles propriétés pour les classes existantes.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui permet de noter un bouquin entre 1 et 5 étoiles</p>
+<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui à partir d&#39;un note en chiffre, permet de noter un bouquin entre 1 et 5 étoiles</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 </code></pre>
 
@@ -86,7 +86,7 @@
       <google-codelab-step label="Sealed class" duration="0">
         <p>Les ‘Sealed class&#39; sont utilisées pour représenter les hiérarchies de classes restreintes, lorsqu&#39;une valeur peut avoir l&#39;un des types d&#39;un ensemble limité, mais ne peut avoir aucun autre type. Elles sont en quelque sorte une extension des classes enum: l&#39;ensemble des valeurs d&#39;un type enum est également restreint, mais chaque constante enum n&#39;existe qu&#39;en tant qu&#39;instance unique, alors qu&#39;une sous-classe d&#39;une classe scellée peut avoir plusieurs instances pouvant contenir Etat.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une classz BookRepository qui permet de retourner un livre à partir de son Isbn, la classe retourné serait une sous-classe d&#39;une seald class BookResult</p>
+<p>Ecrire une classe BookRepository qui permet de retourner un livre à partir de son Isbn, la classe retournée serait une sous-classe d&#39;une sealed class BookResult</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 
 class BookRepository{
@@ -102,9 +102,13 @@ class BookRepository{
       </google-codelab-step>
     
       <google-codelab-step label="Functor" duration="0">
-        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>À Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un fonctor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie). »<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
+        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un fonctor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie). »<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
+<pre><code>interface Functor&lt;C&lt;_&gt;&gt; {
+   fun &lt;A,B&gt; map(ca: C&lt;A&gt;, transform: (A) -&gt; B): C&lt;B&gt;
+}
+</code></pre>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin<br>Appeler cette fonction dans un test unitaire ou une fonction main avec des exemples de bouquin</p>
+<p>Ecrire une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin<br>Appeler cette fonction dans un test unitaire ou une fonction main sur la liste des bouquins suivants</p>
 <pre><code>val books = listOf(
                   Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;),
                   Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;),
@@ -116,7 +120,11 @@ class BookRepository{
       </google-codelab-step>
     
       <google-codelab-step label="Monad" duration="0">
-        <p>c&#39;est un functor qui définit une fonction flatmap qui prend en paramètre une fonction qui retourne le même type</p>
+        <p>Une Monade est un functor qui définit une fonction flatmap qui prend en paramètre une fonction qui retourne le même type</p>
+<pre><code>interface Monad&lt;C&lt;_&gt;&gt;: Functor&lt;C&gt; {
+fun &lt;A, B&gt; flatMap(ca:C&lt;A&gt;, fm:(A) -&gt; C&lt;B&gt;): C&lt;B&gt;
+}
+</code></pre>
 <h2 is-upgraded>Exercice</h2>
 <p>Ecrire une fonction qui à partir d&#39;une liste de bouquins retourne une liste d&#39;Auteurs de ces bouquins</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;)
@@ -127,10 +135,20 @@ data class Author(val name : String)
       </google-codelab-step>
     
       <google-codelab-step label="Applicative" duration="0">
-        <p>c&#39;est un type qui définit 2 fonctions, une fonction pure(t : T) qui retourne t encapsulé dans un conteneur (un type) et une 2ème fonction qui permet de transférer un type encapsulé dans un conteneur en un autre type encapsulé dans le même conteneur.</p>
+        <p>Une Applicative c&#39;est un type qui définit 2 fonctions, une fonction pure(t : T) qui retourne t encapsulé dans un conteneur (un type) et une 2ème fonction qui permet de transférer un type encapsulé dans un conteneur en un autre type encapsulé dans le même conteneur.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres d&#39;appliquer des fonctions qui permet de noter le livre et une fonction qui permet de vérifier la disponibilité.</p>
+<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres une fonction qui permet de noter un livre et une fonction qui permet de vérifier la disponibilité.</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;, val numberOfReaders: Long, val editionDate: LocalDateTime)
+
+
+val books = listOf(
+                  Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;, listOf(Author(&#34;A1&#34;), Author(&#34;A2&#34;)), 10000, LocalDateTime.now().minus(2)),
+                  Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;, listOf(Author(&#34;B1&#34;), Author(&#34;B2&#34;)), 5000, LocalDateTime.now().minus(3))),
+                  Book(&#34;ISBNTEST3&#34;, &#34;Functional Kotlin&#34;, listOf(Author(&#34;C1&#34;), Author(&#34;C2&#34;)), 7000, LocalDateTime.now().minus(1))),
+                  )
+
+
+val functions = listOf&lt;(Book) -&gt; Any&gt;({ ::rateBook, ::isAvailable)
 
 </code></pre>
 
@@ -138,15 +156,15 @@ data class Author(val name : String)
       </google-codelab-step>
     
       <google-codelab-step label="Function composition" duration="0">
-        <p>c&#39;est une technique pour construire des fonctions en utilisant des fonctions existantes à l&#39;instar des « pipes unix », le résultat d&#39;une fonction est utilisé comme le paramètre d&#39;une autre.</p>
+        <p>c&#39;est une technique pour construire des fonctions en utilisant des fonctions existantes à l&#39;instar des « pipes unix », le résultat d&#39;une fonction est utilisé comme le paramètre d&#39;une autre.<br>Par exemple, si on a 2 fonctions f et g,  <code>(f ∘ g)(x) = f(g</code>(x))<br>ArrowKT introduit la infix function <code>compose</code> qui permet de composer les fonctions, à conditions que le retour de la 2ème fonction matche avec le paramètre de la 1ère fonction.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui retourne le titre d&#39;un livre et écrire une 2ème fonction qui transforme une chaîne en majuscule. En passant par la composition, écrire une fonction qui permet d&#39;afficher le titre d&#39;un livre en majuscule.</p>
+<p>Ecrire une fonction qui retourne le titre d&#39;un livre et écrire une 2ème fonction qui transforme une chaîne en majuscule.<br>En passant par la composition, écrire une fonction qui permet d&#39;afficher le titre d&#39;un livre en majuscule.</p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Partial Application" duration="0">
-        <p>L&#39;application partielle, est une technique qui permet de créer une nouvelle fonction en passant un paramètre à une fonction existante.<br>Arrow introduit les fonctions d&#39;extension suivante : partially1, partially2, ..., partially22</p>
+        <p>L&#39;application partielle, est une technique qui permet de créer une nouvelle fonction en passant un paramètre à une fonction existante.<br>Arrow introduit les fonctions d&#39;extension suivante : <code>partially1, partially2, ..., partially22</code></p>
 <h2 is-upgraded>Exercice</h2>
 <p>Ecrire une fonction qui permet de créer un livre à partir de son titre, isbn, type<br>A l&#39;aide de l&#39;application partielle écrire une fonction qui permet de créer des livres de type : « développement logiciel »</p>
 
@@ -163,19 +181,15 @@ data class Author(val name : String)
     
       <google-codelab-step label="Currying vs Partial Application" duration="0">
         <h2 is-upgraded>Currying</h2>
-<p>A partir d&#39;une fonction qui a une « arity » de n retourne un enchainement de n fonctions d&#39;un seul paramètre. Après que le currying a été appliqué, on peut appliquer que le premier paramètre. On peut aussi lui appliquer un reverse.</p>
+<p>A partir d&#39;une fonction qui a une « arity » de n, le currying permet de retourner un enchainement de n fonctions d&#39;un seul paramètre.<br>Après que le currying a été appliqué, on peut appliquer que le premier paramètre. On peut aussi lui appliquer un reverse.</p>
 <h2 is-upgraded>Partial application</h2>
-<p>A partir d&#39;une fonction qui a une « arity » de n retourne une fonction d&#39;arity n-1, on peut appliquer n&#39;importe quel paramètre dans n&#39;importe quel ordre et on peut lui appliquer un reverse.</p>
-<ul>
-<li>Arrow Types</li>
-<li>Option</li>
-</ul>
+<p>A partir d&#39;une fonction qui a une « arity » de n, l&#39;application partielle permet de retourner une fonction d&#39;arity n-1, on peut appliquer n&#39;importe quel paramètre dans n&#39;importe quel ordre et on peut lui appliquer un reverse.</p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Optics" duration="0">
-        <p>sont des abstractions permettant de mettre à jour des structures de données immuables d&#39;une manière élégante. Une forme de &#34;optics&#34;<br>sont les &#34;lens&#34; (ou lenses selon l&#39;implémentation de la bibliothèque). Une ‘lens&#39; est une référence fonctionnelle qui a pour objectif de se concentrer sur la structure en lisant, écrivant ou modifiant sa cible.</p>
+        <p>Les optics sont des abstractions permettant de mettre à jour des structures de données immuables d&#39;une manière élégante.<br>Une forme de &#34;optics&#34; sont les &#34;lens&#34; (ou lenses selon l&#39;implémentation de la bibliothèque). Une ‘lens&#39; est une référence fonctionnelle qui a pour objectif de se concentrer sur la structure en lisant, écrivant ou modifiant sa cible.</p>
 <h2 is-upgraded>Exercice</h2>
 <p>En se basant sur les optics, créer un une fonction qui permet de modifier le titre d&#39;un bouquin immuable</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;)
@@ -187,8 +201,12 @@ data class Author(val name : String)
       </google-codelab-step>
     
       <google-codelab-step label="Option" duration="0">
-        <p>Etant donnée une liste d&#39;option de bouquin, écrire une fonction qui prend cette liste en paramètre et qui retour une liste d&#39;Option d&#39;auteur. Retourn une liste de bouquin en utilisant la fonction fold</p>
+        <p>Etant donnée une liste d&#39;option de bouquin, écrire une fonction qui prend cette liste en paramètre et qui retour une liste d&#39;Option d&#39;auteur. Retourn une liste de bouquin en utilisant la fonction <code>fold</code></p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;)
+
+val books = listOf(Option.of(Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;, listOf(Author(&#34;A1&#34;), Author(&#34;A2&#34;))),
+                   Option.of(Book(&#34;ISBNTEST2&#34;, &#34;Functional Kotlin&#34;, listOf(Author(&#34;B1&#34;), Author(&#34;B2&#34;)))
+                  )
 
 </code></pre>
 
@@ -196,16 +214,16 @@ data class Author(val name : String)
       </google-codelab-step>
     
       <google-codelab-step label="Either" duration="0">
-        <p>Ecrire une fonction qui retourne à partir d&#39;une liste de livres prédéfinis, prend en paramètre un livre, une Either de book s&#39;il trouve ou pas le livre dans la liste.</p>
+        <p>Ecrire une fonction prend en paramètre un livre, qui retourne à partir d&#39;une liste de livres prédéfinis, une Eithe de book s&#39;il trouve ou pas le livre dans la liste.</p>
 <ul>
-<li>A l&#39;aide de la fonction fold, lister les titres des livres trouvées</li>
+<li>A l&#39;aide de la fonction fold, lister les titres des livres trouvés</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Try" duration="0">
-        <p>Encapsuler la fonction précédente dans un Try, tester l&#39;appel à une BookRepository findBookByTitle() avec un bouquin introuvable</p>
+        <p>Encapsuler la fonction précédente dans un Try, tester l&#39;appel à une BookRepository <code>findBookByTitle()</code> avec un bouquin introuvable</p>
 
 
       </google-codelab-step>
