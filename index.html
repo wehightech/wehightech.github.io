@@ -28,6 +28,12 @@
                   feedback-link="">
     
       <google-codelab-step label="Aperçu" duration="0">
+        <p class="image-container"><img alt="Import-Project" src="img/7582940ddad47b59.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Contenu du codelab" duration="0">
         <ul>
 <li>Pourquoi Arrow KT ?</li>
 <li>Les concepts Kotlin exploités par Arrow KT (Extension functions, sealed class)</li>
@@ -102,7 +108,7 @@ class BookRepository{
       </google-codelab-step>
     
       <google-codelab-step label="Functor" duration="0">
-        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un fonctor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie). »<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
+        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un functor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie). »<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
 <pre><code>interface Functor&lt;C&lt;_&gt;&gt; {
    fun &lt;A,B&gt; map(ca: C&lt;A&gt;, transform: (A) -&gt; B): C&lt;B&gt;
 }
@@ -163,7 +169,7 @@ val functions = listOf&lt;(Book) -&gt; Any&gt;({ ::rateBook, ::isAvailable)
       </google-codelab-step>
     
       <google-codelab-step label="Function composition" duration="0">
-        <p>c&#39;est une technique pour construire des fonctions en utilisant des fonctions existantes à l&#39;instar des « pipes unix », le résultat d&#39;une fonction est utilisé comme le paramètre d&#39;une autre.<br>Par exemple, si on a 2 fonctions f et g,  <code>(f ∘ g)(x) = f(g</code>(x))<br>ArrowKT introduit la infix function <code>compose</code> qui permet de composer les fonctions, à conditions que le retour de la 2ème fonction matche avec le paramètre de la 1ère fonction.</p>
+        <p>c&#39;est une technique pour construire des fonctions en utilisant des fonctions existantes à l&#39;instar des « pipes unix », le résultat d&#39;une fonction est utilisé comme le paramètre d&#39;une autre.<br>Par exemple, si on a 2 fonctions f et g,  <code>(f ∘ g)(x) = f(g</code>(x))<br>ArrowKT introduit la infix function <code>compose</code> qui permet de composer les fonctions, à condition que le retour de la 2ème fonction matche avec le paramètre de la 1ère fonction.</p>
 <h2 is-upgraded>Exercice</h2>
 <p>Ecrire une fonction qui retourne le titre d&#39;un livre et écrire une 2ème fonction qui transforme une chaîne en majuscule.<br>En passant par la composition, écrire une fonction qui permet d&#39;afficher le titre d&#39;un livre en majuscule.</p>
 
@@ -238,7 +244,7 @@ val books = listOf(Option.of(Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#
       <google-codelab-step label="Conclusion" duration="0">
         <p>Grâce à ce codelab, vous avez pu acquérir les bases qui vous permettent de commencer à utiliser Arrow-kt dans vos projets.<br>Pour approfondir le sujet, je vous recommand de:</p>
 <ul>
-<li>lire la documentation sur le site https://arrow-kt.io</li>
+<li>Lire la documentation sur le site https://arrow-kt.io</li>
 <li>Lire l&#39;excellent livre &#34;Functional Kotlin&#34; de Mario Arias et Rivu Chakraborty</li>
 </ul>
 
