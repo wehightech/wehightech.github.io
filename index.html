@@ -81,14 +81,14 @@
       </google-codelab-step>
     
       <google-codelab-step label="Fonction d&#39;extension" duration="0">
-        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur une classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous appartient pas et/ou qu&#39;on n&#39;a pas le droit de modifier.</p>
+        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur une classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous n&#39;appartient pas et/ou qu&#39;on n&#39;a pas le droit de modifier.</p>
 <p>Kotlin offre la possibilité d&#39;étendre une classe avec de nouvelles fonctionnalités, sans avoir à hériter de la classe ni à utiliser des design patterns tels que Decorator. Cela se fait en passant par des déclarations spéciales appelées extensions. Par exemple, vous pouvez écrire de nouvelles fonctions pour une classe à partir d&#39;une bibliothèque tierce que vous ne pouvez pas modifier. De telles fonctions sont disponibles à être appeler d&#39;une manière habituelle, comme s&#39;il s&#39;agissait de méthodes de la classe d&#39;origine. Ce mécanisme s&#39;appelle des fonctions d&#39;extension. Il existe également des propriétés d&#39;extension qui vous permettent de définir de nouvelles propriétés pour les classes existantes.</p>
-<p>Voici un exemple :<br>Imaginons qu&#39;on veut ajouter une fonction d&#39;extension au type Int, qui vérifie si un nombre est pair.<br>On écrit la fonction de la manière suivante :</p>
+<p><em>Voici un exemple :</em><br>Imaginons qu&#39;on veut ajouter une fonction d&#39;extension au type Int, qui vérifie si un nombre est pair.<br>On écrit la fonction de la manière suivante :</p>
 <pre><code>fun Int.isEven() = this % 2 == 0
 </code></pre>
 <p>c.f: <a href="https://kotlinlang.org/docs/reference/extensions.html" target="_blank">[fonctions d&#39;extension]</a></p>
 <h2 is-upgraded>Exercice</h2>
-<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui à partir d&#39;une note en chiffre, permet de noter un bouquin entre 1 et 5 étoiles ★</p>
+<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui, à partir d&#39;une note en chiffre, permet de noter un bouquin entre 1 et 5 étoiles ★</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 </code></pre>
 
@@ -98,7 +98,7 @@
       <google-codelab-step label="Sealed class" duration="0">
         <p>Les ‘Sealed class&#39; sont utilisées pour représenter les hiérarchies de classes restreintes, lorsqu&#39;une valeur peut avoir l&#39;un des types d&#39;un ensemble limité, mais ne peut avoir aucun autre type. Elles sont en quelque sorte une extension des classes enum: l&#39;ensemble des valeurs d&#39;un type enum est également restreint, mais chaque constante enum n&#39;existe qu&#39;en tant qu&#39;instance unique, alors qu&#39;une sous-classe d&#39;une &#34;sealed classe&#34;  peut avoir plusieurs instances pouvant contenir un état.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une classe BookRepository qui permet de retourner un livre à partir de son Isbn, la classe retournée serait une sous-classe d&#39;une sealed class BookResult.<br>Appeler la fonction findBookByIsbn dans une fonction main</p>
+<p>Ecrire une classe <code>BookRepository</code> qui permet de retourner un livre à partir de son Isbn, la classe retournée serait une sous-classe d&#39;une sealed class BookResult.<br>Appeler la fonction findBookByIsbn dans une fonction main</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 
 sealed class BookResult {
@@ -128,7 +128,7 @@ class BookRepository{
       </google-codelab-step>
     
       <google-codelab-step label="Option" duration="0">
-        <p>Une option est un type de donnée &#34;datatype&#34; qui ensapsule une donnée et qui modélise sa présence et son absence.</p>
+        <p>Une option est un type de donnée &#34;datatype&#34;, qui ensapsule une donnée et qui modélise sa présence et son absence.</p>
 <h2 is-upgraded>Exercice 1</h2>
 <p>Etant donné la fonction <code>findBookByTitle(title: String): Option&lt;Book&gt;</code> et la liste des bouquins suivants:</p>
 <pre><code>    val books = listOf(
@@ -148,19 +148,20 @@ class BookRepository{
 <li>Afficher le nom du bouquin trouvé</li>
 </ul>
 <h2 is-upgraded>Exercice 2</h2>
-<p>Ecrire une implémentation d&#39;une fonction d&#39;extension map d&#39;une Option en utilisant la fonction flatmap</p>
+<p>Ecrire une implémentation d&#39;une fonction d&#39;extension <code>map</code> d&#39;une Option en utilisant la fonction flatmap</p>
 <pre><code>fun &lt;T, R&gt; Option&lt;T&gt;.map(transform: (T) -&gt; R): Option&lt;R&gt; {
   ...
 }
 </code></pre>
 <p>Vérifier que la fonction <code>map</code> que vous avez implémenté fonctionne correctement en rejouant un test avec une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin.</p>
+<p>Indication: Pour encapsuler une donnée dans une <code>Option</code>, penser à utiliser la fonction <code>Option.just()</code></p>
 <p>c.f: <a href="https://arrow-kt.io/docs/arrow/core/option/" target="_blank">[Arrow-kt option]</a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Either" duration="0">
-        <p>Either est un type de donnée &#34;datatype&#34; qui encapsule le resultat d&#39;une fonction, sur le côté gauche, il y a l&#39;erreur et sur le côté de droite, il y a la valeur de retour de la fonction.</p>
+        <p>Either est un type de donnée &#34;datatype&#34; qui encapsule le resultat d&#39;une fonction, sur le côté gauche, il y a l&#39;erreur et sur le côté de droite, il y a la valeur de retour de la fonction en cas de succès.</p>
 <h2 is-upgraded>Exercice 1</h2>
 <p>Ecrire une fonction qui prend en paramètre un livre, qui retourne à partir d&#39;une liste de livres prédéfinis, un Either de book</p>
 <p>La signature de la fonction est la suivante :</p>
@@ -184,7 +185,7 @@ class BookRepository{
       </google-codelab-step>
     
       <google-codelab-step label="Functor" duration="0">
-        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un functor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie.<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
+        <p>Un functor c&#39;est un type qui définit comment transformer son contenu.<br>Kotlin, ne fournit pas nativement cette fonctionnalité. Arrow.kt enrichit Kotlin en implémentant ces concepts.<br>Par ailleurs, si un type a <code>map</code> comme fonction ou comme fonction d&#39;extension, alors ce type est un functor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie.<br>Les fonctions d&#39;extension sont si flexibles, que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
 <pre><code>interface Functor&lt;F&gt; {
    fun &lt;A, B&gt; Kind&lt;F, A&gt;.map(f: (A) -&gt; B): Kind&lt;F, B&gt;
 }
@@ -198,7 +199,7 @@ class BookRepository{
                   Book(&#34;ISBNTEST4&#34;, &#34;Programming Rust&#34;)
                   )
 </code></pre>
-<p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/functor/" target="_blank">[Arrow-kt functor]</a></p>
+<p>Le type liste est un functor, puisqu&#39;il implémente une fonction <code>map</code><br>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/functor/" target="_blank">[Arrow-kt functor]</a></p>
 
 
       </google-codelab-step>
@@ -206,7 +207,7 @@ class BookRepository{
       <google-codelab-step label="Applicative" duration="0">
         <p>Une Applicative c&#39;est un type qui définit 2 fonctions, une fonction pure(t : T) qui retourne t encapsulé dans un conteneur (un type) et une 2ème fonction qui permet de transférer un type encapsulé dans un conteneur en un autre type encapsulé dans le même conteneur.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres une fonction qui permet d&#39;afficher le titre en majuscule et une fonction qui permet de vérifier la disponibilité.<br>Un livre est disponible si sa date d&#39;édition est inférieure à la date du jour.</p>
+<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres, une fonction qui permet d&#39;afficher le titre en majuscule et une fonction qui permet de vérifier la disponibilité.<br>Un livre est disponible si sa date d&#39;édition est inférieure à la date du jour.</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;, val numberOfReaders: Long, val editionDate: LocalDateTime)
 
 val books = listOf(
@@ -225,7 +226,7 @@ val functions = listOf&lt;(Book) -&gt; Any&gt;(Book::titleInUpperCase, Book::isA
       </google-codelab-step>
     
       <google-codelab-step label="Monad" duration="0">
-        <p>Une Monade est un functor qui définit une fonction flatmap, qui prend en paramètre une fonction qui retourne le même type</p>
+        <p>Une Monade est un functor qui définit une fonction <code>flatmap</code>, qui prend en paramètre une fonction qui retourne le même type</p>
 <pre><code>interface Monad&lt;F&gt;{
   fun &lt;A, B&gt; Kind&lt;F, A&gt;.flatMap(f: (A) -&gt; Kind&lt;F, B&gt;): Kind&lt;F, B&gt;
 }
@@ -259,14 +260,14 @@ val books = listOf(
     
       <google-codelab-step label="Partial Application" duration="0">
         <p>L&#39;application partielle, est une technique qui permet de créer une nouvelle fonction en passant un paramètre à une fonction existante.<br>Arrow introduit les fonctions d&#39;extension suivante : <code>partially1, partially2, ..., partially22</code></p>
-<pre><code>fun multiply(x: Int, y: Int, z: Int): Int{
-  return x*y*z
+<pre><code>fun multiply(x: Int, y: Int, z: Int): Int {
+    return x * y * z
 }
 
 val multiplyBy3: (x: Int, y: Int) -&gt; Int = ::multiply.partially2(3)
+println(multiplyBy3(5,5))
 
-println(mulitplyBy3(5,5))
-&gt;&gt; 45
+// result = 75
 </code></pre>
 <h2 is-upgraded>Exercice</h2>
 <p>Ecrire une fonction qui permet de créer un livre à partir de son titre, isbn, type<br>A l&#39;aide de l&#39;application partielle écrire une fonction qui permet de créer des livres de type : « programming »</p>
@@ -276,6 +277,14 @@ println(mulitplyBy3(5,5))
     
       <google-codelab-step label="Currying" duration="0">
         <p>Le currying consiste à transformer une fonction ayant plusieurs paramètres en un enchaînement d&#39;appel de fonction à un seul paramètre.<br>La question qui se pose maintenant, c&#39;est à quoi ça sert, le &#34;currying&#34; ou curryfication ?<br>L&#39;intérêt des fonctions qui prennent un seul argument est qu&#39;elles peuvent être combinées ou composées pour créer de nouvelles fonctions</p>
+<pre><code>fun multiply(x: Int, y: Int, z: Int): Int {
+    return x * y * z
+}
+    
+val curriedMultiply: (Int) -&gt; (Int) -&gt; (Int) -&gt; Int = ::multiply.curried()
+val result = curriedMultiply(5)(5)(3)
+// result = 75
+</code></pre>
 <h2 is-upgraded>Exercice</h2>
 <p>Transformer la fonction implémentée dans l&#39;exercice précédent qui permet de créer un livre à partir de son titre, isbn, type en un enchaînement de fonctions d&#39;un seul paramètre.</p>
 <pre><code>fun createBook(isbn: String, title: String, type: String): Book {
@@ -297,10 +306,19 @@ println(mulitplyBy3(5,5))
     
       <google-codelab-step label="Optics" duration="0">
         <p>Les optics sont des abstractions permettant de mettre à jour des structures de données immuables d&#39;une manière élégante.<br>Une forme de &#34;optics&#34; sont les &#34;lens&#34; (ou lenses selon l&#39;implémentation de la bibliothèque). Une ‘lens&#39; est une référence fonctionnelle qui a pour objectif de se concentrer sur la structure en lisant, écrivant ou modifiant sa cible.</p>
+<p>Un exemple de lens qui permet de modifier le prix d&#39;aun article</p>
+<pre><code> val articleLens: Lens&lt;Article, Double&gt; = Lens(
+         get = { article -&gt; article.title },
+         set = { article, value -&gt; article.copy(price = value) }
+      )
+
+ val modifiedArticle = articleLens.set(myArticle, 200.0)   
+</code></pre>
+<p>c.f: <a href="https://arrow-kt.io/docs/optics/lens/" target="_blank">[Arrow-kt optics-lens]</a></p>
 <h2 is-upgraded>Exercice</h2>
-<p>En se basant sur les optics, créer un une fonction qui permet de modifier le titre d&#39;un bouquin immuable</p>
-<pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;)
-data class Author(val name : String)
+<p>En se basant sur les optics &#34;lens&#34;, créer une fonction qui permet de modifier le éditeur d&#39;un bouquin en l&#39;affichant en majuscule</p>
+<pre><code>data class TechnicalBook(val isbn: String, val title: String, val publisher: Publisher)
+data class Publisher(val name: String)
 
 </code></pre>
 
