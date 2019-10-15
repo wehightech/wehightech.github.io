@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Programmation fonctionnelle avec Arrow KT</title>
+  <title>Programmation fonctionnelle avec Arrow-kt</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="programmation-fonctionnelle-avec-arrow-kt"
-                  title="Programmation fonctionnelle avec Arrow KT"
+                  title="Programmation fonctionnelle avec Arrow-kt"
                   environment="web"
                   feedback-link="">
     
@@ -36,15 +36,15 @@
       <google-codelab-step label="Contenu du codelab" duration="0">
         <ul>
 <li>Pourquoi Arrow KT ?</li>
-<li>Les concepts Kotlin exploités par Arrow KT (Extension functions, sealed class)</li>
+<li>Les concepts Kotlin exploités par Arrow-kt (Extension functions, sealed class)</li>
+<li>Option</li>
+<li>Either</li>
 <li>Quelques concepts de la programmation fonctionnelle (Functor, Applicative, Monad)</li>
 <li>La composition de fonction</li>
 <li>Currying</li>
 <li>Partial application</li>
 <li>Currying vs Partial Application</li>
 <li>Optics</li>
-<li>Option</li>
-<li>Either</li>
 <li>Monad comprehension</li>
 <li>Conclusion</li>
 </ul>
@@ -58,20 +58,22 @@
 <li>Connaissances de base sur la programmation fonctionnelle</li>
 <li>IntelliJ</li>
 <li>JDK8+</li>
+<li>Git</li>
+<li>Maven</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Pourquoi Arrow KT ?" duration="0">
-        <p>Arrow vise à fournir un ensemble d&#39;interfaces et d&#39;abstractions se basant sur la puissance de Kotlin (fonction d&#39;extension, sealed classes, ...).<br>Il implémente les types de données, les classes de types et les abstractions les plus populaires tels que Option, Try, Either, IO, Functor, Applicative, Monad, afin de fournir aux développeurs le moyen de développer des applications et des bibliothèques se basant sur les paradigmes de la programmation fonctionnelle.</p>
+        <p>Arrow vise à fournir un ensemble d&#39;interfaces et d&#39;abstractions se basant sur la puissance de Kotlin (fonction d&#39;extension, sealed classes, ...).<br>Il implémente les types de données &#34;Datatypes&#34; (Either, Option, ...) , les classes de types &#34;typesclasses&#34; (Functor, Applicative, Monad, ...) et des abstractions, qui fournissent aux développeurs le moyen de développer des applications et des bibliothèques se basant sur les paradigmes de la programmation fonctionnelle.</p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Démarrer avec un environnement de travail" duration="0">
         <ul>
-<li>Récupérer le projet suivant de github<br>https://github.com/riadh-mnasri/kotlin-arrowkt</li>
+<li>Récupérer le projet suivant de github:<br><code>git clone https://github.com/riadh-mnasri/kotlin-arrowkt</code></li>
 <li>Importer ce projet avec IntelliJ<br><img alt="Import-Project" src="img/b5f7bf34bf86805.png"></li>
 </ul>
 
@@ -79,10 +81,14 @@
       </google-codelab-step>
     
       <google-codelab-step label="Fonction d&#39;extension" duration="0">
-        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur une classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous appartient pas et ou qu&#39;on n&#39;a pas le droit de modifier.</p>
+        <p>Une fonction d&#39;extension est une fonction qu&#39;on implémente sur une classe qu&#39;on ne peut pas modifier. Cette fonctionnalité permet d&#39;ajouter un comportement sur une classe qui nous appartient pas et/ou qu&#39;on n&#39;a pas le droit de modifier.</p>
 <p>Kotlin offre la possibilité d&#39;étendre une classe avec de nouvelles fonctionnalités, sans avoir à hériter de la classe ni à utiliser des design patterns tels que Decorator. Cela se fait en passant par des déclarations spéciales appelées extensions. Par exemple, vous pouvez écrire de nouvelles fonctions pour une classe à partir d&#39;une bibliothèque tierce que vous ne pouvez pas modifier. De telles fonctions sont disponibles à être appeler d&#39;une manière habituelle, comme s&#39;il s&#39;agissait de méthodes de la classe d&#39;origine. Ce mécanisme s&#39;appelle des fonctions d&#39;extension. Il existe également des propriétés d&#39;extension qui vous permettent de définir de nouvelles propriétés pour les classes existantes.</p>
+<p>Voici un exemple :<br>Imaginons qu&#39;on veut ajouter une fonction d&#39;extension au type Int, qui vérifie si un nombre est pair.<br>On écrit la fonction de la manière suivante :</p>
+<pre><code>fun Int.isEven() = this % 2 == 0
+</code></pre>
+<p>c.f: <a href="https://kotlinlang.org/docs/reference/extensions.html" target="_blank">[fonctions d&#39;extension]</a></p>
 <h2 is-upgraded>Exercice</h2>
-<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui à partir d&#39;une note en chiffre, permet de noter un bouquin entre 1 et 5 étoiles</p>
+<p>Etant donné la classe bouquin suivante, écrire et appeler une fonction qui à partir d&#39;une note en chiffre, permet de noter un bouquin entre 1 et 5 étoiles ★</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 </code></pre>
 
@@ -92,10 +98,23 @@
       <google-codelab-step label="Sealed class" duration="0">
         <p>Les ‘Sealed class&#39; sont utilisées pour représenter les hiérarchies de classes restreintes, lorsqu&#39;une valeur peut avoir l&#39;un des types d&#39;un ensemble limité, mais ne peut avoir aucun autre type. Elles sont en quelque sorte une extension des classes enum: l&#39;ensemble des valeurs d&#39;un type enum est également restreint, mais chaque constante enum n&#39;existe qu&#39;en tant qu&#39;instance unique, alors qu&#39;une sous-classe d&#39;une &#34;sealed classe&#34;  peut avoir plusieurs instances pouvant contenir un état.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une classe BookRepository qui permet de retourner un livre à partir de son Isbn, la classe retournée serait une sous-classe d&#39;une sealed class BookResult</p>
+<p>Ecrire une classe BookRepository qui permet de retourner un livre à partir de son Isbn, la classe retournée serait une sous-classe d&#39;une sealed class BookResult.<br>Appeler la fonction findBookByIsbn dans une fonction main</p>
 <pre><code>data class Book(val isbn: String, val title: String)
 
+sealed class BookResult {
+
+    class FoundBook(book: Book): BookResult()
+    class BookNotFound(title: String): BookResult()
+}
+
 class BookRepository{
+
+    val books = listOf(
+        Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;),
+        Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;),
+        Book(&#34;ISBNTEST3&#34;, &#34;Functional Kotlin&#34;),
+        Book(&#34;ISBNTEST4&#34;, &#34;Programming Rust&#34;)
+    )
 
    fun findBookByIsbn(isbn: String): BookResult {
       ...
@@ -103,18 +122,75 @@ class BookRepository{
 	
 }
 </code></pre>
+<p>c.f: <a href="https://kotlinlang.org/docs/reference/sealed-classes.html" target="_blank">[sealed-classes]</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Option" duration="0">
+        <p>Une option est un type de donnée &#34;datatype&#34; qui ensapsule une donnée et qui modélise sa présence et son absence.</p>
+<h2 is-upgraded>Exercice 1</h2>
+<p>Etant donné la fonction <code>findBookByTitle(title: String): Option&lt;Book&gt;</code> et la liste des bouquins suivants:</p>
+<pre><code>    val books = listOf(
+        Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;),
+        Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;),
+        Book(&#34;ISBNTEST3&#34;, &#34;Functional Kotlin&#34;)
+    )
+
+    fun findBookByTitle(title: String): Option&lt;Book&gt; {
+       return books.firstOrNull { it.title.equals(title, true) }.toOption()
+    }
+
+
+</code></pre>
+<ul>
+<li>Appeler la fonction <code>findBookByTitle</code> dans un cas ou on trouve le bouquin recherché et dans un cas où on ne trouve pas!</li>
+<li>Afficher le nom du bouquin trouvé</li>
+</ul>
+<h2 is-upgraded>Exercice 2</h2>
+<p>Ecrire une implémentation d&#39;une fonction d&#39;extension map d&#39;une Option en utilisant la fonction flatmap</p>
+<pre><code>fun &lt;T, R&gt; Option&lt;T&gt;.map(transform: (T) -&gt; R): Option&lt;R&gt; {
+  ...
+}
+</code></pre>
+<p>Vérifier que la fonction <code>map</code> que vous avez implémenté fonctionne correctement en rejouant un test avec une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin.</p>
+<p>c.f: <a href="https://arrow-kt.io/docs/arrow/core/option/" target="_blank">[Arrow-kt option]</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Either" duration="0">
+        <p>Either est un type de donnée &#34;datatype&#34; qui encapsule le resultat d&#39;une fonction, sur le côté gauche, il y a l&#39;erreur et sur le côté de droite, il y a la valeur de retour de la fonction.</p>
+<h2 is-upgraded>Exercice 1</h2>
+<p>Ecrire une fonction qui prend en paramètre un livre, qui retourne à partir d&#39;une liste de livres prédéfinis, un Either de book</p>
+<p>La signature de la fonction est la suivante :</p>
+<pre><code>   fun findBookByTitle(title: String): Either&lt;BookResult.BookNotFound, Book&gt; {
+    }
+
+</code></pre>
+<pre><code>sealed class BookResult {
+
+    class FoundBook(book: Book): BookResult()
+    class BookNotFound(title: String): BookResult()
+}
+</code></pre>
+<ul>
+<li>Récupérer la liste des livres de la section précédente sur les options</li>
+<li>A l&#39;aide de la fonction fold, afficher le titre du livre trouvé.</li>
+</ul>
+<p>c.f: <a href="https://arrow-kt.io/docs/arrow/core/either/" target="_blank">[Arrow-kt either]</a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Functor" duration="0">
-        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un functor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie. »<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
-<pre><code>interface Functor&lt;C&lt;_&gt;&gt; {
-   fun &lt;A,B&gt; map(ca: C&lt;A&gt;, transform: (A) -&gt; B): C&lt;B&gt;
+        <p>Un functor c&#39;est un type qui définit comment transformer son contenu<br>Kotlin, ne fournit pas nativement cette fonctionnalité, mais nous pouvons la simuler par convention.<br>Si un type a une fonction ou une fonction d&#39;extension, alors map est un functor, on parle alors de structure typage, définissant un type par sa structure plutôt que par sa hiérarchie.<br>Les fonctions d&#39;extension sont si flexibles que nous pouvons écrire une fonction map pour un type de fonction (A)-&gt; B, donc, transformant des fonctions en fonctor.</p>
+<pre><code>interface Functor&lt;F&gt; {
+   fun &lt;A, B&gt; Kind&lt;F, A&gt;.map(f: (A) -&gt; B): Kind&lt;F, B&gt;
 }
 </code></pre>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin contenant le mot Kotlin<br>Appeler cette fonction sur la liste des bouquins suivants:</p>
+<p>Ecrire une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin<br>Appeler cette fonction sur la liste des bouquins suivants:</p>
 <pre><code>val books = listOf(
                   Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;),
                   Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;),
@@ -122,6 +198,7 @@ class BookRepository{
                   Book(&#34;ISBNTEST4&#34;, &#34;Programming Rust&#34;)
                   )
 </code></pre>
+<p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/functor/" target="_blank">[Arrow-kt functor]</a></p>
 
 
       </google-codelab-step>
@@ -142,14 +219,15 @@ val books = listOf(
 val functions = listOf&lt;(Book) -&gt; Any&gt;(Book::titleInUpperCase, Book::isAvailable)
 
 </code></pre>
+<p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/applicative/" target="_blank">[Arrow-kt applicative]</a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Monad" duration="0">
         <p>Une Monade est un functor qui définit une fonction flatmap, qui prend en paramètre une fonction qui retourne le même type</p>
-<pre><code>interface Monad&lt;C&lt;_&gt;&gt;: Functor&lt;C&gt; {
-fun &lt;A, B&gt; flatMap(ca:C&lt;A&gt;, fm:(A) -&gt; C&lt;B&gt;): C&lt;B&gt;
+<pre><code>interface Monad&lt;F&gt;{
+  fun &lt;A, B&gt; Kind&lt;F, A&gt;.flatMap(f: (A) -&gt; Kind&lt;F, B&gt;): Kind&lt;F, B&gt;
 }
 </code></pre>
 <h2 is-upgraded>Exercice 1</h2>
@@ -165,20 +243,7 @@ val books = listOf(
 )
 
 </code></pre>
-<h2 is-upgraded>Exercice 2</h2>
-<p>Ecrire une implémentation d&#39;une fonction d&#39;extension map d&#39;une Option en utilisant la fonction flatmap</p>
-<pre><code>fun &lt;T, R&gt; Option&lt;T&gt;.map(transform: (T) -&gt; R): Option&lt;R&gt; {
-	...
-}
-</code></pre>
-<p>Vérifier que la fonction map que vous avez implémenter fonctionne correctement en rejouant un test avec la fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin contenant le mot Kotlin</p>
-<pre><code>val books = listOf(
-                  Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;),
-                  Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;),
-                  Book(&#34;ISBNTEST3&#34;, &#34;Functional Kotlin&#34;),
-                  Book(&#34;ISBNTEST4&#34;, &#34;Programming Rust&#34;)
-                  )
-</code></pre>
+<p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/monad/" target="_blank">[Arrow-kt monad]</a></p>
 <p><strong>Pour aller plus loin</strong>: Les functors, monades et applicatives proviennent de la théorie des cathégories.<br>Pour plus de détails sur le sujet, voir la présentation d&#39;Emilien Pecoul sur la théorie des cathégories, qui explique d&#39;une manière simplifiée ces concepts.<br><a href="https://www.youtube.com/watch?v=83e3TWdecqQ" target="_blank">[Théorie des cathégories]</a> !</p>
 
 
@@ -194,6 +259,15 @@ val books = listOf(
     
       <google-codelab-step label="Partial Application" duration="0">
         <p>L&#39;application partielle, est une technique qui permet de créer une nouvelle fonction en passant un paramètre à une fonction existante.<br>Arrow introduit les fonctions d&#39;extension suivante : <code>partially1, partially2, ..., partially22</code></p>
+<pre><code>fun multiply(x: Int, y: Int, z: Int): Int{
+  return x*y*z
+}
+
+val multiplyBy3: (x: Int, y: Int) -&gt; Int = ::multiply.partially2(3)
+
+println(mulitplyBy3(5,5))
+&gt;&gt; 45
+</code></pre>
 <h2 is-upgraded>Exercice</h2>
 <p>Ecrire une fonction qui permet de créer un livre à partir de son titre, isbn, type<br>A l&#39;aide de l&#39;application partielle écrire une fonction qui permet de créer des livres de type : « programming »</p>
 
@@ -229,26 +303,6 @@ val books = listOf(
 data class Author(val name : String)
 
 </code></pre>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Option" duration="0">
-        <p>Etant donné la fonction <code>findBookByTitle(title: String): Option&lt;Book&gt;</code> et la liste des bouquins suivants:</p>
-<pre><code>  Book(&#34;ISBNTEST1&#34;, &#34;Programming Kotlin&#34;, listOf(Author(&#34;Author 1&#34;), Author(&#34;Author 2&#34;))),
-  Book(&#34;ISBNTEST2&#34;, &#34;The joy of Kotlin&#34;, listOf(Author(&#34;Author 3&#34;), Author(&#34;Author 4&#34;))),
-
-</code></pre>
-<p>Appeler la fonction <code>findBookByTitle</code> dans un cas ou on trouve le bouquin recherché et dans un cas où on ne trouve pas!<br>Afficher le nom du bouquin trouvé</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Either" duration="0">
-        <p>Ecrire une fonction qui prend en paramètre un livre, qui retourne à partir d&#39;une liste de livres prédéfinis, un Either de book, s&#39;il trouve ou pas le livre dans la liste.</p>
-<ul>
-<li>A l&#39;aide de la fonction fold, afficher le titre du livre trouvé.</li>
-</ul>
 
 
       </google-codelab-step>
