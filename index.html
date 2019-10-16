@@ -40,12 +40,12 @@
 <li>Option</li>
 <li>Either</li>
 <li>Quelques concepts de la programmation fonctionnelle (Functor, Applicative, Monad)</li>
+<li>Monad comprehension</li>
 <li>La composition de fonction</li>
 <li>Currying</li>
 <li>Partial application</li>
 <li>Currying vs Partial Application</li>
 <li>Optics</li>
-<li>Monad comprehension</li>
 <li>Conclusion</li>
 </ul>
 
@@ -147,14 +147,6 @@ class BookRepository{
 <li>Appeler la fonction <code>findBookByTitle</code> dans un cas ou on trouve le bouquin recherché et dans un cas où on ne trouve pas!</li>
 <li>Afficher le nom du bouquin trouvé</li>
 </ul>
-<h2 is-upgraded>Exercice 2</h2>
-<p>Ecrire une implémentation d&#39;une fonction d&#39;extension <code>map</code> d&#39;une Option en utilisant la fonction flatmap</p>
-<pre><code>fun &lt;T, R&gt; Option&lt;T&gt;.map(transform: (T) -&gt; R): Option&lt;R&gt; {
-  ...
-}
-</code></pre>
-<p>Vérifier que la fonction <code>map</code> que vous avez implémenté fonctionne correctement en rejouant un test avec une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin.</p>
-<p>Indication: Pour encapsuler une donnée dans une <code>Option</code>, penser à utiliser la fonction <code>Option.just()</code></p>
 <p>c.f: <a href="https://arrow-kt.io/docs/arrow/core/option/" target="_blank">[Arrow-kt option]</a></p>
 
 
@@ -207,7 +199,7 @@ class BookRepository{
       <google-codelab-step label="Applicative" duration="0">
         <p>Une Applicative c&#39;est un type qui définit 2 fonctions, une fonction pure(t : T) qui retourne t encapsulé dans un conteneur (un type) et une 2ème fonction qui permet de transférer un type encapsulé dans un conteneur en un autre type encapsulé dans le même conteneur.</p>
 <h2 is-upgraded>Exercice</h2>
-<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres, une fonction qui permet d&#39;afficher le titre en majuscule et une fonction qui permet de vérifier la disponibilité.<br>Un livre est disponible si sa date d&#39;édition est inférieure à la date du jour.</p>
+<p>Ecrire une fonction qui permet d&#39;appliquer à une liste de livres, une fonction qui permet d&#39;afficher le titre en majuscule et une fonction qui permet de vérifier la disponibilité, elle retourne &#34;disponible&#34; ou &#34;indisponible&#34;<br>Un livre est disponible si sa date d&#39;édition est inférieure à la date du jour.</p>
 <pre><code>data class Book(val isbn : String, val title : String, val books : List&lt;Author&gt;, val numberOfReaders: Long, val editionDate: LocalDateTime)
 
 val books = listOf(
@@ -217,7 +209,7 @@ val books = listOf(
     )
 
 
-val functions = listOf&lt;(Book) -&gt; Any&gt;(Book::titleInUpperCase, Book::isAvailable)
+val functions = listOf&lt;(Book) -&gt; Any&gt;(Book::titleInUpperCase, Book::availability)
 
 </code></pre>
 <p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/applicative/" target="_blank">[Arrow-kt applicative]</a></p>
@@ -244,8 +236,61 @@ val books = listOf(
 )
 
 </code></pre>
-<p>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/monad/" target="_blank">[Arrow-kt monad]</a></p>
+<h2 is-upgraded>Exercice 2</h2>
+<p>Ecrire une implémentation d&#39;une fonction d&#39;extension <code>map</code> d&#39;une Option en utilisant la fonction flatmap</p>
+<pre><code>fun &lt;T, R&gt; Option&lt;T&gt;.map(transform: (T) -&gt; R): Option&lt;R&gt; {
+  ...
+}
+</code></pre>
+<p>Vérifier que la fonction <code>map</code> que vous avez implémenté fonctionne correctement en rejouant un test avec une fonction qui à partir d&#39;une liste de bouquins retourne une liste de titres de bouquin.</p>
+<p>Indication: Pour encapsuler une donnée dans une <code>Option</code>, penser à utiliser la fonction <code>Option.just()</code><br>c.f: <a href="https://arrow-kt.io/docs/arrow/typeclasses/monad/" target="_blank">[Arrow-kt monad]</a></p>
 <p><strong>Pour aller plus loin</strong>: Les functors, monades et applicatives proviennent de la théorie des cathégories.<br>Pour plus de détails sur le sujet, voir la présentation d&#39;Emilien Pecoul sur la théorie des cathégories, qui explique d&#39;une manière simplifiée ces concepts.<br><a href="https://www.youtube.com/watch?v=83e3TWdecqQ" target="_blank">[Théorie des cathégories]</a> !</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Monad comprehension" duration="0">
+        <p>Le but des &#34;Monad comprehension&#34; est d&#39;accéder d&#39;une manière séquentielle à une structure qui est à première vue, nécessite une imbrication d&#39;appels de la fonction flatMap</p>
+<h2 is-upgraded>Exercice</h2>
+<p>Etant le modèle suivant :</p>
+<pre><code>data class Freelance(val name: String, val company: Company)
+data class Company(val name: String, val intermediary: Intermediary)
+data class Intermediary(val name: String, val customer: Customer)
+data class Customer(val name: String)
+
+</code></pre>
+<p>Les fonctions suivantes :</p>
+<pre><code>    fun findFreelanceCompany(freelance: Freelance): Either&lt;SearchResult.FreelanceCompanyNotFound, Company&gt; {
+        val result = freelance.company
+        return when (result) {
+            null -&gt; Either.left(SearchResult.FreelanceCompanyNotFound(freelance))
+            else -&gt; Either.right(result)
+        }
+    }
+
+    fun findIntermediary(company: Company): Either&lt;SearchResult.CompanyIntermediaryNotFound, Intermediary&gt; {
+        val result = company.intermediary
+        return when (result) {
+            null -&gt; Either.left(SearchResult.CompanyIntermediaryNotFound(company))
+            else -&gt; Either.right(result)
+        }
+    }
+
+    fun findFreelanceCustomer(intermediary: Intermediary): Either&lt;SearchResult.CustomerNotFound, Customer&gt; {
+        val result = intermediary.customer
+        return when (result) {
+            null -&gt; Either.left(SearchResult.CustomerNotFound(intermediary))
+            else -&gt; Either.right(result)
+        }
+    }
+
+    sealed class SearchResult {
+    class FreelanceCompanyNotFound(freelance: Freelance) : SearchResult()
+    class CompanyIntermediaryNotFound(company: Company) : SearchResult()
+    class CustomerNotFound(intermediary: Intermediary) : SearchResult()
+   }
+</code></pre>
+<p>Ecrire une fonction qui permet d&#39;afficher le nom du client d&#39;un freelance</p>
 
 
       </google-codelab-step>
@@ -321,52 +366,6 @@ val result = curriedMultiply(5)(5)(3)
 data class Publisher(val name: String)
 
 </code></pre>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Monad comprehension" duration="0">
-        <p>Le but des &#34;Monad comprehension&#34; est d&#39;accéder d&#39;une manière séquentielle à une structure qui est à première vue, nécessite une imbrication d&#39;appels de la fonction flatMap</p>
-<h2 is-upgraded>Exercice</h2>
-<p>Etant le modèle suivant :</p>
-<pre><code>data class Freelance(val name: String, val company: Company)
-data class Company(val name: String, val intermediary: Intermediary)
-data class Intermediary(val name: String, val customer: Customer)
-data class Customer(val name: String)
-
-</code></pre>
-<p>Les fonctions suivantes :</p>
-<pre><code>    fun findFreelanceCompany(freelance: Freelance): Either&lt;SearchResult.FreelanceCompanyNotFound, Company&gt; {
-        val result = freelance.company
-        return when (result) {
-            null -&gt; Either.left(SearchResult.FreelanceCompanyNotFound(freelance))
-            else -&gt; Either.right(result)
-        }
-    }
-
-    fun findIntermediary(company: Company): Either&lt;SearchResult.CompanyIntermediaryNotFound, Intermediary&gt; {
-        val result = company.intermediary
-        return when (result) {
-            null -&gt; Either.left(SearchResult.CompanyIntermediaryNotFound(company))
-            else -&gt; Either.right(result)
-        }
-    }
-
-    fun findFreelanceCustomer(intermediary: Intermediary): Either&lt;SearchResult.CustomerNotFound, Customer&gt; {
-        val result = intermediary.customer
-        return when (result) {
-            null -&gt; Either.left(SearchResult.CustomerNotFound(intermediary))
-            else -&gt; Either.right(result)
-        }
-    }
-
-    sealed class SearchResult {
-    class FreelanceCompanyNotFound(freelance: Freelance) : SearchResult()
-    class CompanyIntermediaryNotFound(company: Company) : SearchResult()
-    class CustomerNotFound(intermediary: Intermediary) : SearchResult()
-   }
-</code></pre>
-<p>Ecrire une fonction qui permet d&#39;afficher le nom du client d&#39;un freelance</p>
 
 
       </google-codelab-step>
