@@ -290,7 +290,7 @@ data class Customer(val name: String)
     class CustomerNotFound(intermediary: Intermediary) : SearchResult()
    }
 </code></pre>
-<p>Ecrire une fonction qui permet d&#39;afficher le nom du client d&#39;un freelance</p>
+<p>Ecrire une fonction qui permet d&#39;afficher le nom du client d&#39;un freelance en passant par la fonction <code>Either.fx</code><br>c.f: <a href="https://arrow-kt.io/docs/arrow/core/either/" target="_blank">[Arrow-kt either]</a></p>
 
 
       </google-codelab-step>
@@ -309,7 +309,7 @@ data class Customer(val name: String)
     return x * y * z
 }
 
-val multiplyBy3: (x: Int, y: Int) -&gt; Int = ::multiply.partially2(3)
+val multiplyBy3: (x: Int, y: Int) -&gt; Int = ::multiply.partially3(3)
 println(multiplyBy3(5,5))
 
 // result = 75
